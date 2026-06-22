@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.imageio.ImageIO;
 
+
 public class Player {
     public GamePanel gp;
     public KeyHandler keyH;
@@ -17,8 +18,11 @@ public class Player {
     // Stats player
     public int col, row, hp, money, wood, steps, snakeCooldown;
     public boolean isDay = true, gameOver = false, gameWin = false, autoMode = false;
-    public BufferedImage up1, down1, left1, right1;
     public String direction = "down";
+
+    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
+    public int spriteCounter = 0;
+    public int spriteNum = 1;
 
     // backtrack
     private List<int[]> autoPath = new ArrayList<>(); // Rute langkah yang harus diambil
@@ -32,7 +36,7 @@ public class Player {
     private final int uangMenang = 1200;
     private final int hpMinimum = 75;
     private final int hpHeal = 35;
-    private final int hargaWood = 25;
+    private final int hargaWood = 1200;
     private final int hargaFish = 30;
     private final int hargaWorms = 60;
     private final int hargaCorn = 15;
@@ -60,14 +64,17 @@ public class Player {
 
     public void getPlayerImage(){
         try {
-            up1 = ImageIO.read(getClass().getResourceAsStream("/Asset/player_up.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/Asset/player_down.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/Asset/player_left.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/Asset/player_right.png"));
-        } catch (Exception e){ 
-            e.printStackTrace(); 
-        }
+            up1 = ImageIO.read(getClass().getResourceAsStream("/Asset/up1.png"));
+            up2 = ImageIO.read(getClass().getResourceAsStream("/Asset/up2.png"));
+            down1 = ImageIO.read(getClass().getResourceAsStream("/Asset/down1.png"));
+            down2 = ImageIO.read(getClass().getResourceAsStream("/Asset/down2.png"));
+            left1 = ImageIO.read(getClass().getResourceAsStream("/Asset/left1.png"));
+            left2 = ImageIO.read(getClass().getResourceAsStream("/Asset/left2.png"));
+            right1 = ImageIO.read(getClass().getResourceAsStream("/Asset/right1.png"));
+            right2 = ImageIO.read(getClass().getResourceAsStream("/Asset/right2.png"));
+        } catch (Exception e){ e.printStackTrace(); }
     }
+
 
     public void update(){
         if(gameOver || gameWin){
@@ -191,6 +198,13 @@ public class Player {
                     }
                 }
             }
+        }
+
+        spriteCounter++;
+        if(spriteCounter > 2) { // Kecepatan ganti kaki
+            if(spriteNum == 1) spriteNum = 2;
+            else if(spriteNum == 2) spriteNum = 1;
+            spriteCounter = 0;
         }
     }
 
@@ -446,15 +460,26 @@ public class Player {
     }
 
     public void draw(Graphics2D g2){
-        BufferedImage img;
-        if(direction.equals("up")) 
-            img = up1;
-        else if(direction.equals("left")) 
-            img = left1;
-        else if(direction.equals("right")) 
-            img = right1;
-        else 
-            img = down1;
+        BufferedImage img = null;
+        
+        switch(direction) {
+            case "up":
+                if(spriteNum == 1) img = up1;
+                if(spriteNum == 2) img = up2;
+                break;
+            case "down":
+                if(spriteNum == 1) img = down1;
+                if(spriteNum == 2) img = down2;
+                break;
+            case "left":
+                if(spriteNum == 1) img = left1;
+                if(spriteNum == 2) img = left2;
+                break;
+            case "right":
+                if(spriteNum == 1) img = right1;
+                if(spriteNum == 2) img = right2;
+                break;
+        }
         
         if(autoMode){ 
             g2.setColor(new Color(0, 255, 255, 60)); 

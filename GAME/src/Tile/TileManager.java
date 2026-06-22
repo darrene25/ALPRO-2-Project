@@ -22,21 +22,29 @@ public class TileManager {
     // atur asset bisa dilewati atau ga
     public void getTileImage() {
         try {
-            for(int i = 0; i < 15; i++) 
+            for(int i = 0; i < 15; i++) // Pastikan loop ini mencakup index 14
                 tile[i] = new Tile();
+
+            // ASSET LAMA (TETAP ADA)
             tile[0].image = ImageIO.read(getClass().getResourceAsStream("/Asset/rumput.png"));
-            
             tile[1].image = ImageIO.read(getClass().getResourceAsStream("/Asset/batu.png"));
             tile[1].collision = true; 
-            
             tile[2].image = ImageIO.read(getClass().getResourceAsStream("/Asset/pohon.png"));
             tile[3].image = ImageIO.read(getClass().getResourceAsStream("/Asset/desa.png"));
             tile[4].image = ImageIO.read(getClass().getResourceAsStream("/Asset/jamu.png"));
             tile[5].image = ImageIO.read(getClass().getResourceAsStream("/Asset/exit.png"));
             tile[8].image = ImageIO.read(getClass().getResourceAsStream("/Asset/pasar.png"));
             tile[9].image = ImageIO.read(getClass().getResourceAsStream("/Asset/kolam.png"));
-            tile[10].image = ImageIO.read(getClass().getResourceAsStream("/Asset/sawah.png")); // a
-            tile[12].image = ImageIO.read(getClass().getResourceAsStream("/Asset/kades.png")); // c
+            tile[10].image = ImageIO.read(getClass().getResourceAsStream("/Asset/sawah.png"));
+            tile[12].image = ImageIO.read(getClass().getResourceAsStream("/Asset/kades.png"));
+
+            // ASSET BARU KHUSUS MAP 2
+            tile[13].image = ImageIO.read(getClass().getResourceAsStream("/Asset/tembokmap2.png"));
+            tile[13].collision = true; // Tembok tidak bisa dilewati
+
+            tile[14].image = ImageIO.read(getClass().getResourceAsStream("/Asset/jalanmap2.png"));
+            tile[14].collision = false; // Jalan bisa dilewati
+
         } catch (Exception e){ 
             e.printStackTrace(); 
         }
@@ -55,7 +63,16 @@ public class TileManager {
                 for(int col = 0; col < gp.maxScreenCol; col++) {
                     char c = line.charAt(col);
 
-                    mapTileNum[col][row] = Character.getNumericValue(c);
+                    if (c == 't') {
+                        mapTileNum[col][row] = 13; // Pakai Tembok Map 2
+                    } 
+                    else if (c == 'j') {
+                        mapTileNum[col][row] = 14; // Pakai Jalan Map 2
+                    } 
+                    else {
+                        // Tetap support angka (0,1,2,3,4,5,8,9) dan huruf lain (a, c)
+                        mapTileNum[col][row] = Character.getNumericValue(c);
+                    }
                 }
             }
             br.close();
