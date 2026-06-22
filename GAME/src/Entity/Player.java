@@ -36,7 +36,7 @@ public class Player {
     private final int uangMenang = 1200;
     private final int hpMinimum = 75;
     private final int hpHeal = 35;
-    private final int hargaWood = 1200;
+    private final int hargaWood = 1000;
     private final int hargaFish = 30;
     private final int hargaWorms = 60;
     private final int hargaCorn = 15;
