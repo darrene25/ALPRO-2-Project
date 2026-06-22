@@ -78,14 +78,24 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     // Loop Utama
-    @Override
+    @Override   
     public void run() {
+        // 60 FPS Logic
+        double drawInterval = 1000000000 / 60; 
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+
         while(gameThread != null) {
-            update();  
-            repaint(); 
-            try{ 
-                Thread.sleep(16); 
-            } catch(Exception e){}
+            currentTime = System.nanoTime();
+            delta += (currentTime - lastTime) / drawInterval;
+            lastTime = currentTime;
+
+            if(delta >= 1) {
+                update();
+                repaint();
+                delta--;
+            }
         }
     }
 
@@ -132,6 +142,7 @@ public class GamePanel extends JPanel implements Runnable {
                 ui.drawResultScreens(g2);
             }
         }
+        java.awt.Toolkit.getDefaultToolkit().sync(); 
         g2.dispose(); // ben ga lemot kata GPT
     }
 
