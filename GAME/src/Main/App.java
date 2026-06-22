@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 
 public class App {
     public static void main(String[] args) {
+        // tes
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
